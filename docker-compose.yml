@@ -1,74 +1,96 @@
+# Docker-compose pour Regest et ses services
+# Version 1.0
+# Auteur : Manon ANGELI et Mathis REGESTE
+# Date : 2023-02-17
+
 version : '3.9'
 
+# Les variables d'environnement sont déclarée dans le fichier .env
+
+# Liste des services
 services:
+
+  # Application Regest
   regest:
-    image: regest/regest:bugs-Manon
-    container_name: regest
-    ports:
-      - "80:3000"
-    environment:
-      DOCKER_TEST: 'true'
-    volumes:
-      - ./regest:/regest/comptes_rendus:rw
+    image: regest/regest:${VERSION_REGEST}
+    container_name: ${NOM_REGEST}
     restart:  always
+    ports:
+      - "${PORT_REGEST}:3000"
+    environment:
+      ## Pour bdd_config
+      DOCKER_PROD: ${DOCKER_PROD}
+      IP_MYSQL: ${IP_MYSQL}
+      PORT_MYSQL: ${PORT_MYSQL}
+      USER_MYSQL: ${USER_MYSQL}
+      PASSWORD_MYSQL: ${PASSWORD_MYSQL}
+      DATABASE_MYSQL: ${DATABASE_MYSQL}
+    volumes:
+      - ./regest:/regest:rw
+
     networks:
       dockerNetwork:
-        ipv4_address: "192.168.90.30"
+        ipv4_address: ${IP_REGEST}
 
+  # Base de données MySQL
   database:
     image: mariadb:latest
-    container_name: database
+    container_name: ${NOM_MYSQL}
+    restart: always
     expose:
-      - "4000"
+      - ${PORT_MYSQL}
     ports:
-      - "4000:3306"
+      - "${PORT_MYSQL}:3306"
     volumes:
-      - ./bdd/bdd_regest.sql:/docker-entrypoint-initdb.d/bdd_regest.sql
+      - ./bdd_regest.sql:/docker-entrypoint-initdb.d/bdd_regest.sql
       - ./bdd:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
-      MYSQL_DATABASE: regest
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: ${DATABASE_MYSQL}
+      MYSQL_USER: ${USER_MYSQL}
+      MYSQL_PASSWORD: ${PASSWORD_MYSQL}
     networks:
       dockerNetwork:
-        ipv4_address: "192.168.90.31"
+        ipv4_address: ${IP_MYSQL}
 
+  # Serveur SSH
   ssh:
     image: linuxserver/openssh-server:latest
-    container_name: ssh
-    ports:
-      - "2222:22"
+    container_name: ${NOM_SSH}
     restart: always
+    ports:
+      - "${PORT_SSH}:22"
     volumes:
-      - ./regest:/regest/comptes_rendus:rw
+      - ./regest:/regest:rw
     environment:
       SUDO_ACCESS: "false"
       PASSWORD_ACCESS: "true"
-      USER_NAME: user
-      USER_PASSWORD: password
+      USER_NAME: ${USER_SSH}
+      USER_PASSWORD: ${PASSWORD_SSH}
     networks:
       dockerNetwork:
-        ipv4_address: "192.168.90.32"
+        ipv4_address: ${IP_SSH}
  
+  # Serveur PhpMyAdmin pour administation de la BDD
   phpmyadmin: 
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    expose:
-      - "4001"
-    ports:
-      - "4001:80"
-    environment:
-      - PMA_HOST=192.168.90.31
-      - PMA_PORT=3306 
+    container_name: ${NOM_PHPMYADMIN}
     restart: always
+    expose:
+      - ${PORT_PHPMYADMIN}
+    ports:
+      - "${PORT_PHPMYADMIN}:80"
+    environment:
+      - PMA_HOST=${IP_MYSQL}
+      - PMA_PORT=${PORT_MYSQL} 
     networks:
       dockerNetwork:
-        ipv4_address: "192.168.90.33"
+        ipv4_address: ${IP_PHPMYADMIN}
 
+# Réseau Docker pour les services
 networks:
   dockerNetwork:
     ipam:
       driver: default
       config: 
-        - subnet: "192.168.90.0/24"
+        - subnet: ${SUBNET_NETWORK}
