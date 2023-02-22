@@ -27,7 +27,8 @@ services:
       DATABASE_MYSQL: ${DATABASE_MYSQL}
       RACINE: ${RACINE}
     volumes:
-      - ./regest:/usr/src/app/regest:rw
+      - ./regest/projet:/usr/src/app/regest/projet:rw
+      - ./regest/user:/usr/src/app/regest/user:rw
 
     networks:
       dockerNetwork:
@@ -43,8 +44,8 @@ services:
     ports:
       - "${PORT_MYSQL}:3306"
     volumes:
-      - ./bdd_regest.sql:/docker-entrypoint-initdb.d/bdd_regest.sql
-      - ./bdd:/var/lib/mysql
+      - ./bdd/bdd_regest.sql:/docker-entrypoint-initdb.d/bdd_regest.sql
+      - ./bdd/mysql:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
       MYSQL_DATABASE: ${DATABASE_MYSQL}
@@ -55,22 +56,22 @@ services:
         ipv4_address: ${IP_MYSQL}
 
   # Serveur SSH
-  ssh:
-    image: linuxserver/openssh-server:latest
-    container_name: ${NOM_SSH}
-    restart: always
-    ports:
-      - "${PORT_SSH}:22"
-    volumes:
-      - ./regest:/regest:rw
-    environment:
-      SUDO_ACCESS: "false"
-      PASSWORD_ACCESS: "true"
-      USER_NAME: ${USER_SSH}
-      USER_PASSWORD: ${PASSWORD_SSH}
-    networks:
-      dockerNetwork:
-        ipv4_address: ${IP_SSH}
+  #ssh:
+  #  image: linuxserver/openssh-server:latest
+  #  container_name: ${NOM_SSH}
+  #  restart: always
+  #  ports:
+  #    - "${PORT_SSH}:22"
+  #  volumes:
+  #    - ./regest:/regest:rw
+  #  environment:
+  #    SUDO_ACCESS: "false"
+  #    PASSWORD_ACCESS: "true"
+  #    USER_NAME: ${USER_SSH}
+  #    USER_PASSWORD: ${PASSWORD_SSH}
+  #  networks:
+  #    dockerNetwork:
+  #      ipv4_address: ${IP_SSH}
  
   # Serveur PhpMyAdmin pour administation de la BDD
   phpmyadmin: 
