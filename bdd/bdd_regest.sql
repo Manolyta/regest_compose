@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-galle-tessonneau.alwaysdata.net
--- Generation Time: Feb 22, 2023 at 05:54 PM
+-- Generation Time: Feb 27, 2023 at 05:44 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.19
 
@@ -267,7 +267,8 @@ CREATE TABLE `tache_to_do_list` (
   `echeance` date DEFAULT NULL,
   `etat` int(11) NOT NULL,
   `id_utilisateur` int(11) NOT NULL,
-  `id_liste_to_do_list` int(11) NOT NULL
+  `id_liste_to_do_list` int(11) NOT NULL,
+  `id_equipe` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -428,7 +429,8 @@ ALTER TABLE `site`
 ALTER TABLE `tache_to_do_list`
   ADD PRIMARY KEY (`id_tache_to_do_list`),
   ADD KEY `id_dossierTodoList` (`id_liste_to_do_list`),
-  ADD KEY `id_utilisateur` (`id_utilisateur`);
+  ADD KEY `id_utilisateur` (`id_utilisateur`),
+  ADD KEY `id_equipe` (`id_equipe`);
 
 --
 -- Indexes for table `user_rejoint_equipe`
