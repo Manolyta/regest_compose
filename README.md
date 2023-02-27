@@ -1,8 +1,22 @@
-# regest_compose
+# REGEST
 
 REGEST est une application NodeJS spécialisée dans la suivi de projet:
 
-Pour déployer regest sous forme de container, il faut tout d'abord installer Docker:
+Pour déployer regest sous forme de container, il faut tout d'abord installer Git et Docker:
+
+## Installation de Git
+
+1. Vérifiez si Git est déjà installé sur votre système en exécutant la commande suivante dans votre terminal:
+```
+git --version
+```
+
+2. Si Git n'est pas installer, l'installer avec les commandes suivantes :
+
+```
+sudo apt-get update
+sudo apt-get install git
+```
 
 ## Installation de Docker
 
@@ -73,9 +87,19 @@ Vous devrez redémarrer Docker après avoir modifié ce fichier de configuration
 
 ## Déploiement de REGEST grâce à Docker
 
+Une fois, docker en place, il faut cloner le répertoire regest_compose, puis se placer à l’intérieur :
 ```
 $ git clone https://github.com/Manolyta/regest_compose.git
 $ cd Projet-Fil-Rouge/
+
+```
+
+Il est ensuite nécessaire de modifier le fichier de variables d’environnement afin de venir adapter certains éléments de configuration, notamment les informations liées au réseau pour une meilleur intégration.
+Il faut apporter ces éventuelles modification depuis le fichier regest_compose/.env
+
+Une fois toutes les modifications apportées, on peut lancer les conteneurs en se plaçant dans le répertoire regest_compose :
+
+```
 $ docker compose up -d
 ```
 
