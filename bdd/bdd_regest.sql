@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-galle-tessonneau.alwaysdata.net
--- Generation Time: Feb 27, 2023 at 05:44 PM
+-- Generation Time: Mar 02, 2023 at 01:24 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.19
 
@@ -20,23 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `galle-tessonneau_regest`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `autorisation`
---
-
-CREATE TABLE `autorisation` (
-  `id_autorisation` int(11) NOT NULL,
-  `lecture` tinyint(1) DEFAULT NULL,
-  `ecriture` tinyint(1) DEFAULT NULL,
-  `suppression` tinyint(1) DEFAULT NULL,
-  `id_utilisateur` int(11) NOT NULL,
-  `id_equipe` int(11) NOT NULL,
-  `id_repertoire` int(11) NOT NULL,
-  `id_fichier` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,13 +47,6 @@ CREATE TABLE `equipe` (
   `nom` varchar(50) DEFAULT NULL,
   `id_projet` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `equipe`
---
-
-INSERT INTO `equipe` (`id_equipe`, `nom`, `id_projet`) VALUES
-(1, 'Développement Regest', 1);
 
 -- --------------------------------------------------------
 
@@ -118,24 +94,6 @@ CREATE TABLE `gantt_tasks` (
   `id_projet` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `gantt_tasks`
---
-
-INSERT INTO `gantt_tasks` (`id`, `text`, `start_date`, `duration`, `progress`, `parent`, `sort_order`, `id_projet`) VALUES
-(1, 'Test 1', '2023-02-12 00:00:00', 3, 0, 0, 4, 1),
-(2, 'Test 2', '2023-02-12 00:00:00', 3, 0, 0, 3, 1),
-(3, 'tst 3', '2023-02-12 00:00:00', 3, 0, 0, 9, 1),
-(4, 'test 4', '2023-02-12 00:00:00', 3, 0, 0, 12, 1),
-(5, 'test 5', '2023-02-12 00:00:00', 3, 0, 0, 13, 1),
-(6, 'sous tache 1', '2023-02-12 00:00:00', 2, 0, 1, 14, 1),
-(7, 'sous tache 2', '2023-02-12 00:00:00', 2, 0, 1, 15, 1),
-(8, 'sous tache 3', '2023-02-12 00:00:00', 2, 0, 9, 2, 1),
-(9, 'sous tache 4', '2023-02-12 00:00:00', 1, 0, 2, 17, 1),
-(10, 'sous tache 5', '2023-02-12 00:00:00', 1, 0, 3, 19, 1),
-(11, 'sous tache 6', '2023-02-12 00:00:00', 1, 0, 3, 20, 1),
-(13, 'test 6', '2023-02-12 00:00:00', 1, 0, 0, 21, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -163,19 +121,6 @@ CREATE TABLE `news` (
   `id_utilisateur` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `news`
---
-
-INSERT INTO `news` (`id_news`, `titre`, `contenu`, `date`, `id_projet`, `id_utilisateur`) VALUES
-(6, 'Lancement du projet regest !', 'C\'ets parti !', '2022-12-05', 1, 1),
-(7, 'Début du dev ! ', 'ça va chauffer !', '2022-12-05', 1, 1),
-(8, 'Fin des interfaces ! Ou presque !', 'Y\'en a qui vont burn out ', '2022-12-05', 1, 1),
-(9, 'Fin de l\'ajout des news ! Yay !', 'Nous avons enfin fini de développé l\'ajout des news !', '2022-12-05', 1, 1),
-(10, 'C\'est cassé ? ', 'Et voilà un bonne chose de faite aussi !', '2022-12-05', 1, 1),
-(12, 'Présentation suivi projet', 'Coucou les amis je suis sauvage', '2022-12-09', 1, 1),
-(22, 'Consigne oral de fin de période', 'Deux présentations orales :\r\n\r\n	Présentation académique :\r\n\r\n		Comment on a mener le projet ? \r\n		Les choix techniques ?\r\n\r\n	Présentation / Démonstration à un investisseur :\r\n\r\n		Démonstration : validation du point de vue\r\n		Element de création d\'entreprise ?\r\n		Remise de la documentation / manuel utilisateur ? \r\n	\r\nPossible redondance entre les 2 oraux.\r\n', '2023-02-07', 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -191,13 +136,6 @@ CREATE TABLE `projet` (
   `id_chef_de_projet` int(11) NOT NULL,
   `id_site` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `projet`
---
-
-INSERT INTO `projet` (`id_projet`, `nom`, `date_debut`, `date_fin`, `status`, `id_chef_de_projet`, `id_site`) VALUES
-(1, 'Regest', '2022-12-09', '2023-04-26', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -230,7 +168,7 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id_role`, `role`) VALUES
-(1, 'Mon role');
+(1, 'Administrateur');
 
 -- --------------------------------------------------------
 
@@ -243,13 +181,6 @@ CREATE TABLE `site` (
   `nom` varchar(50) DEFAULT NULL,
   `adresse` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `site`
---
-
-INSERT INTO `site` (`id_site`, `nom`, `adresse`) VALUES
-(1, 'Groupama Supports & Services - Castelnau-le-Lez', '1000 Avenue Marcel Dassault\r\n34170 Castelnau-le-Lez');
 
 -- --------------------------------------------------------
 
@@ -283,16 +214,6 @@ CREATE TABLE `user_rejoint_equipe` (
   `id_equipe` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `user_rejoint_equipe`
---
-
-INSERT INTO `user_rejoint_equipe` (`date_entree`, `id_utilisateur`, `id_equipe`) VALUES
-('2023-01-05', 1, 1),
-('2023-02-07', 5, 1),
-('2023-02-17', 3, 1),
-('2023-02-17', 2, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -314,29 +235,8 @@ CREATE TABLE `utilisateur` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `utilisateur`
---
-
-INSERT INTO `utilisateur` (`id_utilisateur`, `password`, `nom`, `prenom`, `telephone`, `email`, `poste`, `service`, `nom_image`, `lien_calendar`, `id_role`) VALUES
-(1, '8d81994270a41fbf34beb634235075060fb873cf229aa68afd2d50e6dc7afe49', 'ANGELI', 'Manon', '0658259635', 'user', 'Développeur', 'Développement', 'image.png', 'https://calendar.google.com/calendar/u/0/embed?src=p2rn64sthgafnnpe0ug4p8fkds@group.calendar.google.com&ctz=Europe/Paris', 1),
-(2, '$2y$10$kVwHyN04Eoeqew0vsdJ2iOkDKEW2H/bSdwV9TU/ouZ3usEJ1E7ngi', 'limata', 'nicolas', '0782545752', 'nicolas.limata@mines-ales.org', 'comique', 'clown', NULL, NULL, 1),
-(3, 'ca41dd8b7e0a3e7d9aa7f8e689c48936d95d848d97febd6362c9cb60da275512', 'Angeli', 'Manon', '0618084480', 'manon', NULL, NULL, NULL, NULL, 1),
-(4, '09de0ab0f8dff491c36c0f09e5f33e6f52fe805bd2383fbf2db88f5e7df43a27', 'Locatelli', 'Julia', NULL, 'julia.locatelli@mines-ales.org', NULL, NULL, NULL, NULL, 1),
-(5, '2db9372c8e496073f53521b87a2118effeb074662bf4c78f5562d14de1b4f3d0', 'Regeste', 'Corky', NULL, 'corky', NULL, NULL, NULL, NULL, 1);
-
---
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `autorisation`
---
-ALTER TABLE `autorisation`
-  ADD PRIMARY KEY (`id_autorisation`),
-  ADD KEY `id_utilisateur` (`id_utilisateur`),
-  ADD KEY `id_equipe` (`id_equipe`),
-  ADD KEY `id_repertoire` (`id_repertoire`),
-  ADD KEY `id_fichier` (`id_fichier`);
 
 --
 -- Indexes for table `cr_reunion`
@@ -451,12 +351,6 @@ ALTER TABLE `utilisateur`
 --
 
 --
--- AUTO_INCREMENT for table `autorisation`
---
-ALTER TABLE `autorisation`
-  MODIFY `id_autorisation` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `cr_reunion`
 --
 ALTER TABLE `cr_reunion`
@@ -537,15 +431,6 @@ ALTER TABLE `utilisateur`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `autorisation`
---
-ALTER TABLE `autorisation`
-  ADD CONSTRAINT `autorisation_equipe` FOREIGN KEY (`id_equipe`) REFERENCES `equipe` (`id_equipe`) ON DELETE CASCADE,
-  ADD CONSTRAINT `autorisation_fichier` FOREIGN KEY (`id_fichier`) REFERENCES `fichier` (`id_fichier`) ON DELETE CASCADE,
-  ADD CONSTRAINT `autorisation_repertoire` FOREIGN KEY (`id_repertoire`) REFERENCES `repertoire` (`id_repertoire`) ON DELETE CASCADE,
-  ADD CONSTRAINT `autorisation_user` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `cr_reunion`
